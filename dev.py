@@ -9,7 +9,8 @@ pid_file = "%s/%s.pid" % (xdg_runtime_dir, app)
 lock_file = "%s/%s.lock" % (xdg_runtime_dir, app)
 
 app_map = {
-    "docker-compose": "/reload-docker-compose.sh",
+    # "docker-compose": "/reload-docker-compose.sh",
+    "docker-compose": "/reload-docker-compose-local-build.sh",
     "docker-compose-local-build": "/reload-docker-compose-local-build.sh",
 }
 print(sys.argv)
@@ -36,14 +37,17 @@ run.pid
 minimal_devops$
 postman.sh$
 runtime/
+bin/
 apisix_log/
 .*_default""".split(
     "\n"
 )
-with open(".devignore", "r") as _fd:
-    for i in _fd:
-        exclude_list.append(i.strip("\n"))
-
+try:
+    with open(".devignore", "r") as _fd:
+        for i in _fd:
+            exclude_list.append(i.strip("\n"))
+except:
+    pass
 
 for i in exclude_list:
     exclude_rule = ["--exclude", "^%s/%s" % (REALPWD, i)]
